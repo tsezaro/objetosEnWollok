@@ -1,0 +1,69 @@
+import empleados.*
+
+describe "Manejo fino de las finanzas de Galván" {
+// describe me permite poner fixture 
+// que es codigo común en todos los test
+// tambien se puede poner metodos comunes a todos los test
+// dentro del describe 	
+
+    fixture {
+        galvan.totalDeuda(0)
+        galvan.totalDinero(0)
+    }
+    
+// En el fixture, para que ande
+// tenes que tener las variables con propierty
+// y no tienen que estar los metodos 
+// que guardan esas variables de consulta 
+    
+    method assertEstadoGalvan(deuda,dinero){
+    	assert.equals(deuda,galvan.totalDinero())
+    	assert.equals(dinero,galvan.totalDinero())
+    }
+    
+
+    test "Si Galván arranca con deuda en 0 y dinero en 0. 
+    Su sueldo (que aún no cobró) es de 15000." {
+        assert.equals(15000, galvan.sueldo())
+    }
+
+    test "Si Galván gasta 4000, totalDeuda() debe ser 4000, 
+    totalDinero() debe ser 0." {
+        galvan.gastar(4000)
+        assert.equals(0, galvan.totalDinero())
+    }
+
+    test "Si Galván gasta primero 2000 y luego 5000, la deuda se suma. 
+    totalDeuda() pasa a 7000, totalDinero() sigue en 0." {
+        galvan.gastar(2000)
+        galvan.gastar(5000)
+        assert.equals(7000, galvan.totalDeuda())
+    }
+
+    test "Si Galván gasta 8000 y luego cobra, con los 15000 
+    que recibe paga toda su deuda y le sobran 7000 pesos. 
+    Por lo tanto, totalDeuda() debe ser 0, y totalDinero() debe ser 7000." {
+        galvan.gastar(8000)
+        gimenez.pagarSueldo(galvan)
+        assert.equals(0, galvan.totalDeuda())
+        assert.equals(7000, galvan.totalDinero())
+    }
+
+    test "Si Galván gasta 20000 y luego cobra, 
+    tiene que dedicar los 15000 a pagar deudas, y no le alcanza. 
+    Ahora, totalDeuda() pasa a 5000, y totalDinero() a 0." {
+        galvan.gastar(20000)
+        gimenez.pagarSueldo(galvan)
+        assert.equals(5000, galvan.totalDeuda())
+        assert.equals(0, galvan.totalDinero())
+    }
+
+    test "Si Galván cobra y luego gasta 25000, cubre 15000 con el dinero que tiene, 
+    el resto es deuda. totalDeuda() queda en 10000, totalDinero() en 0." {
+        gimenez.pagarSueldo(galvan)
+        galvan.gastar(25000)
+        assert.equals(10000, galvan.totalDeuda())
+        assert.equals(0, galvan.totalDinero())
+    }
+
+}

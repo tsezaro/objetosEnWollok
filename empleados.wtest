@@ -1,0 +1,92 @@
+import empleados.*
+
+test "sueldo de Baigorria" {
+	baigorria.venderEmpanada()
+	baigorria.venderEmpanada()
+	assert.equals(1530, baigorria.sueldo())
+}
+
+test "sueldo de Galván" {
+	assert.equals(15000, galvan.sueldo())
+}
+
+
+
+test "gimenez paga sueldo de Galván" {
+	gimenez.pagarSueldo(galvan)
+	assert.equals(285000, gimenez.dinero())
+}
+
+test "gimenez paga sueldo de Baigorria" {
+	gimenez.pagarSueldo(baigorria)
+	assert.equals(298500, gimenez.dinero())
+	assert.equals(1500, baigorria.totalCobrado())
+	
+	baigorria.venderEmpanada()
+	gimenez.pagarSueldo(baigorria)
+	assert.equals(296985, gimenez.dinero())
+	assert.equals(3015, baigorria.totalCobrado())
+}
+
+
+
+test "galvan gasta 4000 y total deuda debe ser 0 "{
+	//prepara el entorno ya esta hecho por enunciado
+	
+	//ejectutar 
+	galvan.gastar(4000)
+	
+	//test
+	assert.equals(4000,galvan.totalDeuda())
+	assert.equals(0,galvan.totalDinero())
+		
+}
+
+test "galvan gasta primero 2000 y luego 5000"{
+	
+	//el entorno ya viene preparado por enunciado
+	
+	//ejecutar
+	galvan.gastar(2000)
+	galvan.gastar(5000)
+	
+	//test
+	assert.equals(7000, galvan.totalDeuda())
+	assert.equals(0, galvan.totalDinero())
+
+}
+
+test "galvan gasta 8000, luego cobra 15000"{
+	
+	//preparar entorno , viene preparado por enunciado
+	
+	//ejecutar
+	galvan.gastar(8000)
+	gimenez.pagarSueldo(galvan)
+	
+	//test
+	assert.equals(0, galvan.totalDeuda())
+	assert.equals(7000, galvan.totalDinero())
+	
+	
+	
+	
+}
+
+
+test "galvan gasta 20000 y luego cobra 15000"{
+	
+	//preparar entorno viene preparado por enunciado
+	
+	//ejectar
+	galvan.gastar(20000)
+	gimenez.pagarSueldo(galvan)
+	
+	//test
+	assert.equals(5000, galvan.totalDeuda())
+	assert.equals(0, galvan.totalDinero())
+		
+	
+	
+}
+	
